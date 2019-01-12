@@ -63,7 +63,6 @@ bool intersects(const Point* oneStart, const Point* oneEnd, const Point* twoStar
     false;
 }
 
-
 //Checks if line from start to end will intersect with any connections
 bool intersectsWithAnyConnection(const Point* start, const Point* end, std::map<int,Point*> points) {
   for (std::map<int, Point*>::iterator outerIt = points.begin(); outerIt != points.end(); outerIt++) {

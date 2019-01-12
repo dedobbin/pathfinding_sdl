@@ -3,11 +3,10 @@
 #include <ctime>
 
 int main(int argv, char* argc[]) {
-  clock_t begin = clock();
   Graphics::Controller * controller = NULL;
   try {
     controller = new Graphics::Controller(700, 700);
-    Graph* g = new Graph(10);
+    Graph* g = new Graph(100);
     Path* p = AStar(g, g->points.at(0), g->points.at(g->points.size() - 1));
     controller->addContent(g);
     controller->addContent(p);
@@ -17,9 +16,10 @@ int main(int argv, char* argc[]) {
   }
   SDL_Event e;
 
-  /**
+  
   bool quit = false;
   while (!quit){
+    clock_t begin = clock();
     while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_QUIT)
@@ -28,10 +28,11 @@ int main(int argv, char* argc[]) {
       }
     }
     controller->draw();
+    double timeSpend = double(clock() - begin) / CLOCKS_PER_SEC;
+    std::cout << "Draw time:" << timeSpend << std::endl;
   }
-  **/
+  
   delete(controller);
-  double timeSpend = double(clock() - begin) / CLOCKS_PER_SEC;
   return 0;
 
 }
