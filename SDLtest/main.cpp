@@ -5,18 +5,21 @@
 int main(int argv, char* argc[]) {
   Graphics::Controller * controller = NULL;
   try {
-    controller = new Graphics::Controller(700, 700);
+    controller = new Graphics::Controller(640, 480);
     Graph* g = new Graph(100);
+    
+    clock_t begin = clock();
     Path* p = AStar(g, g->points.at(0), g->points.at(g->points.size() - 1));
+    double calcTime = double(clock() - begin) / CLOCKS_PER_SEC;
+    std::cout << "Took: " << calcTime << std::endl;
     controller->addContent(g);
     controller->addContent(p);
   }
   catch (std::runtime_error e) {
     std::cout << e.what() << std::endl;
   }
-  SDL_Event e;
 
-  
+  SDL_Event e;
   bool quit = false;
   while (!quit){
     clock_t begin = clock();
@@ -28,8 +31,7 @@ int main(int argv, char* argc[]) {
       }
     }
     controller->draw();
-    double timeSpend = double(clock() - begin) / CLOCKS_PER_SEC;
-    std::cout << "Draw time:" << timeSpend << std::endl;
+    double drawTime = double(clock() - begin) / CLOCKS_PER_SEC;
   }
   
   delete(controller);

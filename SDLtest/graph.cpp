@@ -140,8 +140,8 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
   int x = 0, y = 0;
   if (!debug) {
     //Create points
-    Util::RandomUnique * xGenerator = new Util::RandomUnique(0, 600);
-    Util::RandomUnique * yGenerator = new Util::RandomUnique(0, 600);
+    Util::RandomUnique * xGenerator = new Util::RandomUnique(0, 640);
+    Util::RandomUnique * yGenerator = new Util::RandomUnique(0, 480);
     for (size_t i = 0; i < nPoints; i++) {
       Point* point = new Point(i, xGenerator->generate(), yGenerator->generate());
       this->points.insert(std::pair<int, Point*>(point->id, point));
