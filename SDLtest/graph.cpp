@@ -192,27 +192,29 @@ typedef struct PointWrapper {
 
 //Used for priority queue in a*
 struct compareHeuristic {
-  bool operator()(PointWrapper const l, PointWrapper const r) {
-    return l.priority > r.priority;
+  bool operator()(PointWrapper* l, const PointWrapper* r) {
+    return l->priority > r->priority;
   };
 };
 
 Path* AStar(const Graph* graph, const Point* start, const Point* end){
   std::map<int, int> costMap;
   std::map<int, const Point*> cameFrom;
+  Path* path = NULL;
 
   //todo: is there a way to define logic for compareHeuristic inline (lambda)
-  std::priority_queue<PointWrapper, std::vector<PointWrapper>, compareHeuristic> frontier;
+  std::priority_queue<PointWrapper*, std::vector<PointWrapper*>, compareHeuristic> frontier;
   PointWrapper* startWrapper = new PointWrapper{ start, 0 };
-  frontier.push(*startWrapper);
+  frontier.push(startWrapper);
   costMap.insert(std::pair<int, int>(startWrapper->point->id, 0));
   const PointWrapper current;
 
+
   while (!frontier.empty()) {
-    const PointWrapper current = frontier.top();
+    const PointWrapper* current = frontier.top();
     frontier.pop();
     //found end?
-    if (current.point->id == end->id) {
+    if (current->point->id == end->id) {
       std::vector<const Point*> pathList;
       const Point* current = end;
       while (current->id != start->id) {
@@ -221,20 +223,26 @@ Path* AStar(const Graph* graph, const Point* start, const Point* end){
       }
       pathList.push_back(start);
       std::reverse(pathList.begin(), pathList.end());
-      Path* path = new Path(pathList);
-      return path;
-    }
+      path = new Path(pathList);
+    } else {
 
-    std::vector<Point*> connections = current.point->connections;
-    for (std::vector<Point*>::iterator conIt = connections.begin(); conIt != connections.end(); conIt++) {
-      int cost = costMap.at(current.point->id) + distance(current.point, (*conIt));
-      if (costMap.find((*conIt)->id) == costMap.end()||cost < costMap.at((*conIt)->id)) {
-        costMap.insert(std::pair<int, int>((*conIt)->id, cost));
-        frontier.push(*(new PointWrapper{ *conIt, cost }));
-        cameFrom.insert(std::pair<int, const Point*>((*conIt)->id, current.point));
+      std::vector<Point*> connections = current->point->connections;
+      for (std::vector<Point*>::iterator conIt = connections.begin(); conIt != connections.end(); conIt++) {
+        int cost = costMap.at(current->point->id) + distance(current->point, (*conIt));
+        if (costMap.find((*conIt)->id) == costMap.end() || cost < costMap.at((*conIt)->id)) {
+          costMap.insert(std::pair<int, int>((*conIt)->id, cost));
+          frontier.push(new PointWrapper{ *conIt, cost });
+          cameFrom.insert(std::pair<int, const Point*>((*conIt)->id, current->point));
+        }
       }
-    
+      delete(current);
     }
   }
-  return new Path(std::vector<const Point*>());
+  //remove allocated resources
+  while (!frontier.empty()) {
+    auto top = frontier.top();
+    frontier.pop();
+    delete(top);
+  }
+  return path ? path : new Path(std::vector<const Point*>());
 }
