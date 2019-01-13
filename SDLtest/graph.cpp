@@ -28,7 +28,7 @@ LineEquation getEquation(Point* start, Point* end) {
   return equation;
 }
 
-int getLineOrientation(const Point* p, const Point* q, const Point* r) {
+int getOrientation(const Point* p, const Point* q, const Point* r) {
   int val = (q->y - p->y) * (r->x - q->x) - (q->x - p->x) * (r->y - q->y);
   if (val == 0)
     return 0;
@@ -44,10 +44,10 @@ bool onSegment(const Point* p, const Point* q, const Point* r){
 }
 
 bool intersects(const Point* oneStart, const Point* oneEnd, const Point* twoStart, const Point* twoEnd) {
-  int o1 = getLineOrientation(oneStart, oneEnd, twoStart);
-  int o2 = getLineOrientation(oneStart, oneEnd, twoEnd);
-  int o3 = getLineOrientation(twoStart, twoEnd, oneStart);
-  int o4 = getLineOrientation(twoStart, twoEnd, oneEnd);
+  int o1 = getOrientation(oneStart, oneEnd, twoStart);
+  int o2 = getOrientation(oneStart, oneEnd, twoEnd);
+  int o3 = getOrientation(twoStart, twoEnd, oneStart);
+  int o4 = getOrientation(twoStart, twoEnd, oneEnd);
 
   if (o1 != o2 && o3 != o4)
     return true;
@@ -67,13 +67,7 @@ bool intersects(const Point* oneStart, const Point* oneEnd, const Point* twoStar
 bool intersectsWithAnyConnection(const Point* start, const Point* end, std::map<int,Point*> points) {
   for (std::map<int, Point*>::iterator outerIt = points.begin(); outerIt != points.end(); outerIt++) {
     Point* start2 = outerIt->second;
-    //todo: if i sort points on like, orientation compared to checkee, dont have to go through entire list
     std::vector<Point*> connections = start2->connections;
-    std::sort(std::begin(connections), std::end(connections),
-      [](const auto& a, const auto& b) {
-      return a->x < b->x;
-    });
-
     for (std::vector<Point*>::iterator it = connections.begin(); it != connections.end(); it++) {
       const Point* end2 = (*it);
       if (start == end2 || end == start2 || start == start2 || end == end2)
@@ -129,23 +123,8 @@ bool Graph::connect(Point* start, Point* end, bool ignoreIntersections) {
   //also connect backwards, maybe not needed but this way it's possible depeding on how graph is used, 
   //but this logic allows for one way paths
   end->connections.push_back(start);
-  return true;
-}
 
-bool Graph::disconnect(Point* pointOne, Point* pointTwo) {
-  if (!pointTwo) {
-    pointOne->connections = std::vector<Point*>();
-    return true;
-  }
-  bool result = false;
-  for (auto it = pointOne->connections.begin(); it != pointOne->connections.end(); it++) {
-    if ((*it) == pointTwo) {
-      pointOne->connections.erase(it);
-      result = true;
-      break;
-    }
-  }
-  return result;
+  return true;
 }
 
 Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
@@ -168,8 +147,7 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
         connect(pointsIt->second, nearestIt->second);
       }
     }
-  }
-  else {
+  } else {
     int x = -10;
     int y = 50;
     for (size_t i = 0; i < nPoints; i++) {
@@ -191,7 +169,6 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
       }
     }
   }
-  return;
 }
 
 Graph::~Graph() {

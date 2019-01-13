@@ -32,8 +32,6 @@ public:
   ~Graph();
   //Connects 2 points
   bool connect(Point* start, Point *end, bool ignoreIntersections = false);
-  //Remove all connections if pointTwo is NULL, will remove connection to pointTwo if not (ignores from pointTwo to pointOne)
-  bool disconnect(Point* pointOne, Point* pointTwo = NULL);
   std::map<int, Point*> points;
 };
 
