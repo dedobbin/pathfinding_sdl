@@ -6,12 +6,15 @@ int main(int argv, char* argc[]) {
   Graphics::Controller * controller = NULL;
   try {
     controller = new Graphics::Controller(640, 480);
-    Graph* g = new Graph(100);
-    
     clock_t begin = clock();
+    Graph* g = new Graph(100);
+    double graphTime = double(clock() - begin) / CLOCKS_PER_SEC;
+    std::cout << "Took " << graphTime << " second to creat graph." << std::endl;;
+
+    begin = clock();
     Path* p = AStar(g, g->points.at(0), g->points.at(g->points.size() - 1));
     double calcTime = double(clock() - begin) / CLOCKS_PER_SEC;
-    std::cout << "Took: " << calcTime << std::endl;
+    std::cout << "Took " << calcTime << " seconds to find path." << std::endl;
     controller->addContent(g);
     controller->addContent(p);
   }
