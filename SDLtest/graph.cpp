@@ -147,6 +147,8 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
         connect(pointsIt->second, nearestIt->second);
       }
     }
+    delete(xGenerator);
+    delete(yGenerator);
   } else {
     int x = -10;
     int y = 50;
@@ -205,7 +207,6 @@ Path* AStar(const Graph* graph, const Point* start, const Point* end){
   frontier.push(*startWrapper);
   costMap.insert(std::pair<int, int>(startWrapper->point->id, 0));
   const PointWrapper current;
-
 
   while (!frontier.empty()) {
     const PointWrapper current = frontier.top();
