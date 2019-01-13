@@ -7,7 +7,7 @@ int main(int argv, char* argc[]) {
   try {
     controller = new Graphics::Controller(640, 480);
     clock_t begin = clock();
-    Graph* g = new Graph(96, true);
+    Graph* g = new Graph(100);
     double graphTime = double(clock() - begin) / CLOCKS_PER_SEC;
     std::cout << "Took " << graphTime << " second to creat graph." << std::endl;;
 

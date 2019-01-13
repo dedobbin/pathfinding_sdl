@@ -91,10 +91,10 @@ int distance(const Point* one, const Point* two) {
 }
 
 //Finds amount nearests points to basepoint
-std::vector<Point*> findNearestPoints(const Point * basePoint, std::map<int, Point*> points, int amount = 1) {
+std::map<int, Point*> findNearestPoints(const Point * basePoint, std::map<int, Point*> points, int amount = 1) {
   if (amount >= points.size())
     amount = points.size() - 1;
-  std::vector<Point*> result;
+  std::map<int, Point*> result;
 for (size_t i = 0; i < amount; i++) {
   int shortestDistance = -1;
   int currentPointDistance = -1;
@@ -104,16 +104,14 @@ for (size_t i = 0; i < amount; i++) {
       continue;
     currentPointDistance = abs(it->second->x - basePoint->x) + abs(it->second->y - basePoint->y);
     if (shortestDistance < 0 || currentPointDistance < shortestDistance) {
-      //check if already found
-      //todo: could do this with id map that stores found ones, so don't have to iterate over all results each time
-      //measure time to check if is more efficient
-      if (!(std::find(result.begin(), result.end(), it->second) != result.end())) {
+      //if already found, ignore
+      if (!(result.find(it->second->id) != result.end())) {
         shortestDistance = currentPointDistance;
         currentClosestId = it->second->id;
       }
     }
   }
-  result.push_back(points.at(currentClosestId));
+  result.insert((std::pair<int, Point*>(points.at(currentClosestId)->id, points.at(currentClosestId))));
 }
 return result;
 }
@@ -146,13 +144,13 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
     Util::RandomUnique * yGenerator = new Util::RandomUnique(0, MAXH);
     for (size_t i = 0; i < nPoints; i++) {
       Point* point = new Point(i, xGenerator->generate(), yGenerator->generate());
-      this->points.insert(std::pair<int, Point*>(point->id, point));
+      points.insert(std::pair<int, Point*>(point->id, point));
     }
     //Make connections with nearest points
-    for (auto pointsIt = points.begin(); pointsIt != this->points.end(); pointsIt++) {
-      std::vector<Point*> nearests = findNearestPoints(pointsIt->second, points, 10);
-      for (std::vector<Point*>::iterator nearestIt = nearests.begin(); nearestIt < nearests.end(); nearestIt++) {
-        connect(pointsIt->second, *nearestIt);
+    for (auto pointsIt = points.begin(); pointsIt != points.end(); pointsIt++) {
+      auto nearests = findNearestPoints(pointsIt->second, points, 10);
+      for (auto nearestIt = nearests.begin(); nearestIt != nearests.end(); nearestIt++) {
+        connect(pointsIt->second, nearestIt->second);
       }
     }
   }
@@ -170,10 +168,10 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
       points.insert(std::pair<int, Point*>(point->id, point));
     }
     
-    for (auto pointsIt = points.begin(); pointsIt != this->points.end(); pointsIt++) {
-      std::vector<Point*> nearests = findNearestPoints(pointsIt->second, points, 2);
-      for (std::vector<Point*>::iterator nearestIt = nearests.begin(); nearestIt < nearests.end(); nearestIt++) {
-        connect(pointsIt->second, *nearestIt);
+    for (auto pointsIt = points.begin(); pointsIt != points.end(); pointsIt++) {
+      auto nearests = findNearestPoints(pointsIt->second, points, 2);
+      for (auto nearestIt = nearests.begin(); nearestIt != nearests.end(); nearestIt++) {
+        connect(pointsIt->second, nearestIt->second);
       }
     }
   }
