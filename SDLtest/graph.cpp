@@ -92,7 +92,6 @@ int distance(const Point* one, const Point* two) {
 
 //Finds amount nearests points to basepoint
 std::vector<Point*> findNearestPoints(const Point * basePoint, std::map<int, Point*> points, int amount = 1) {
-  std::map<int, Point*> foundPoints;
   if (amount >= points.size())
     amount = points.size() - 1;
   std::vector<Point*> result;
@@ -137,11 +136,14 @@ bool Graph::connect(Point* start, Point* end, bool ignoreIntersections) {
 }
 
 Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
+  //todo: shouldn't hardcore current window w and h when generating new points
+  const int MAXW = 640;
+  const int MAXH = 480;
   int x = 0, y = 0;
   if (!debug) {
     //Create points
-    Util::RandomUnique * xGenerator = new Util::RandomUnique(0, 640);
-    Util::RandomUnique * yGenerator = new Util::RandomUnique(0, 480);
+    Util::RandomUnique * xGenerator = new Util::RandomUnique(0, MAXW);
+    Util::RandomUnique * yGenerator = new Util::RandomUnique(0, MAXH);
     for (size_t i = 0; i < nPoints; i++) {
       Point* point = new Point(i, xGenerator->generate(), yGenerator->generate());
       this->points.insert(std::pair<int, Point*>(point->id, point));
@@ -155,13 +157,21 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
     }
   }
   else {
+    int x = -10;
+    int y = 50;
+    for (size_t i = 0; i < nPoints; i++) {
+      if (x >= MAXW - 50) {
+          x = 40;
+          y += 50;
+      }
+      else
+        x += 50;
+      Point* point = new Point(i,  x, y);
+      points.insert(std::pair<int, Point*>(point->id, point));
+    }
     
-    points.insert(std::pair<int, Point*>(0, new Point(0, 100, 100)));
-    points.insert(std::pair<int, Point*>(1, new Point(1, 50, 200)));
-    points.insert(std::pair<int, Point*>(2, new Point(2, 150, 200)));
-    //Make connections with nearest points
-    for (std::map<int, Point*>::iterator pointsIt = this->points.begin(); pointsIt != this->points.end(); pointsIt++) {
-      std::vector<Point*> nearests = findNearestPoints(pointsIt->second, points, 10);
+    for (auto pointsIt = points.begin(); pointsIt != this->points.end(); pointsIt++) {
+      std::vector<Point*> nearests = findNearestPoints(pointsIt->second, points, 2);
       for (std::vector<Point*>::iterator nearestIt = nearests.begin(); nearestIt < nearests.end(); nearestIt++) {
         connect(pointsIt->second, *nearestIt);
       }
