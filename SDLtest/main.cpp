@@ -7,7 +7,7 @@ int main(int argv, char* argc[]) {
   try {
     controller = new Graphics::Controller(640, 480);
     clock_t begin = clock();
-    Graph* g = new Graph(100);
+    Graph* g = new Graph(100, true);
     double graphTime = double(clock() - begin) / CLOCKS_PER_SEC;
     std::cout << "Took " << graphTime << " second to creat graph." << std::endl;;
 
@@ -15,6 +15,7 @@ int main(int argv, char* argc[]) {
     Path* p = AStar(g, g->points.at(0), g->points.at(g->points.size() - 1));
     double calcTime = double(clock() - begin) / CLOCKS_PER_SEC;
     std::cout << "Took " << calcTime << " seconds to find path." << std::endl;
+    
     controller->addContent(g);
     controller->addContent(p);
   }

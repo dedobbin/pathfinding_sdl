@@ -122,7 +122,6 @@ Drawable::Drawable(DrawableType _type) : type(_type) {}
 Point::Point(int _id, int _x, int _y)
   : id(_id), x(_x), y(_y) {}
 
-
 bool Graph::connect(Point* start, Point* end, bool ignoreIntersections) {
   if (!ignoreIntersections && intersectsWithAnyConnection(start, end, points))
     return false;
@@ -133,8 +132,24 @@ bool Graph::connect(Point* start, Point* end, bool ignoreIntersections) {
   return true;
 }
 
+bool Graph::disconnect(Point* pointOne, Point* pointTwo) {
+  if (!pointTwo) {
+    pointOne->connections = std::vector<Point*>();
+    return true;
+  }
+  bool result = false;
+  for (auto it = pointOne->connections.begin(); it != pointOne->connections.end(); it++) {
+    if ((*it) == pointTwo) {
+      pointOne->connections.erase(it);
+      result = true;
+      break;
+    }
+  }
+  return result;
+}
+
 Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
-  //todo: shouldn't hardcore current window w and h when generating new points
+  //todo: shouldn't hardcode current window w and h when generating new points
   const int MAXW = 640;
   const int MAXH = 480;
   int x = 0, y = 0;
@@ -164,10 +179,11 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
       }
       else
         x += 50;
+
       Point* point = new Point(i,  x, y);
       points.insert(std::pair<int, Point*>(point->id, point));
     }
-    
+    //Make connections with nearest points
     for (auto pointsIt = points.begin(); pointsIt != points.end(); pointsIt++) {
       auto nearests = findNearestPoints(pointsIt->second, points, 2);
       for (auto nearestIt = nearests.begin(); nearestIt != nearests.end(); nearestIt++) {

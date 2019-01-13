@@ -65,6 +65,8 @@ void Graphics::Controller::draw() {
       case pathType:
       {
         Path * path = (Path*)*drawablePtr;
+        if (path->list.empty())
+          break;
         auto it = path->list.begin();
         SDL_Rect startRect = { path->list.at(0)->x - 2, path->list.at(0)->y - 2, 4, 4 };
         SDL_Rect endRect = { path->list.at(path->list.size()-1)->x - 2, path->list.at(path->list.size()-1)->y - 2, 4, 4 };
