@@ -12,7 +12,7 @@ void Util::seedRandom(int seed) {
 
 int Util::generateRandom(int min, int max) {
   if (!randomInit)
-    Util::seedRandom(time(NULL));
+    seedRandom(time(NULL));
   return rand() % (max + 1 - min) + min;
 }
 
