@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{920BA060-8CDC-4C0A-BFA9-E0CDFED8875E}</ProjectGuid>
-    <RootNamespace>SDLtest</RootNamespace>
+    <RootNamespace>pathfinding_sdl</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -130,15 +130,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="graph.cpp" />
-    <ClCompile Include="graphic.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="util.cpp" />
+    <ClCompile Include="src/graph.cpp" />
+    <ClCompile Include="src/graphic.cpp" />
+    <ClCompile Include="src/main.cpp" />
+    <ClCompile Include="src/util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="graph.h" />
-    <ClInclude Include="graphics.h" />
-    <ClInclude Include="util.h" />
+    <ClInclude Include="src/graph.h" />
+    <ClInclude Include="src/graphics.h" />
+    <ClInclude Include="src/util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
