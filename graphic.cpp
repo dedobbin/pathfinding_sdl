@@ -37,7 +37,7 @@ int Graphics::Controller::addContent(Drawable* drawable) {
 
 void Graphics::Controller::draw() {
   //Clear screen
-  SDL_SetRenderDrawColor(this->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+  SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 0xff);
   SDL_RenderClear(this->renderer);
 
   for (auto drawablePtr = this->content.begin(); drawablePtr < this->content.end(); drawablePtr++) {
@@ -46,7 +46,7 @@ void Graphics::Controller::draw() {
       case graphType:
       {
         Graph * g = (Graph*)*drawablePtr;
-        SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 0xFF);
+        SDL_SetRenderDrawColor(this->renderer, 0xff, 0xff, 0xff, 0xff);
         for (auto pointIt = g->points.begin(); pointIt != g->points.end(); pointIt++) {
           SDL_Rect rect;
           rect.x = pointIt->second->x - 2;
