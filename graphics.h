@@ -1,7 +1,7 @@
 #ifndef __GRAPHICS__
 #define __GRAPHICS__
 
-#include <SDL.h>
+#include <SDL2/SDL.h> 
 #include <string>
 #include <vector>
 

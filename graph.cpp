@@ -92,7 +92,7 @@ std::map<int, Point*> findNearestPoints(const Point * basePoint, std::map<int, P
 for (size_t i = 0; i < amount; i++) {
   int shortestDistance = -1;
   int currentPointDistance = -1;
-  int currentClosestId = NULL;
+  int currentClosestId = 0;
   for (auto it = points.begin(); it != points.end(); it++) {
     if (it->second == basePoint)
       continue;
@@ -208,7 +208,7 @@ Path* AStar(const Graph* graph, const Point* start, const Point* end){
   PointWrapper* startWrapper = new PointWrapper{ start, 0 };
   frontier.push(startWrapper);
   costMap.insert(std::pair<int, int>(startWrapper->point->id, 0));
-  const PointWrapper current;
+  const PointWrapper current{};
 
 
   while (!frontier.empty()) {

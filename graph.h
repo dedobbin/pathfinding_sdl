@@ -43,4 +43,4 @@ public:
 
 Path* AStar(const Graph* g, const Point* start, const Point* end);
 
-#endif __GRAPH_H__
+#endif

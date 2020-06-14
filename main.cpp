@@ -8,7 +8,7 @@ int main(int argv, char* argc[]) {
   clock_t begin = clock();
   Graph* g = new Graph(20);
   double graphTime = double(clock() - begin) / CLOCKS_PER_SEC;
-  std::cout << "Took " << graphTime << " second to creat graph." << std::endl;;
+  std::cout << "Took " << graphTime << " second to create graph." << std::endl;;
 
   begin = clock();
   Path* p = AStar(g, g->points.at(0), g->points.at(g->points.size() - 1));

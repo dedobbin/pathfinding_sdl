@@ -1,6 +1,8 @@
 #include <random>
 #include <ctime>
 #include <numeric>
+#include <algorithm>
+#include <stdexcept>
 #include "util.h"
 
 bool randomInit = false;

@@ -1,21 +1,21 @@
+#include <algorithm>
 #include "graphics.h"
-
 
 Graphics::Controller::Controller(int w, int h) : WIDTH(w), HEIGHT(h) {
   char error_message[100];
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
   {
-    sprintf_s(error_message, "SDL could not initialize, SDL Error: %s\n", SDL_GetError());
+    sprintf(error_message, "SDL could not initialize, SDL Error: %s\n", SDL_GetError());
     throw std::runtime_error(error_message);
   }
   this->window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
   if (this->window == NULL) {
-    sprintf_s(error_message, "Window could not be created, SDL Error: %s\n", SDL_GetError());
+    sprintf(error_message, "Window could not be created, SDL Error: %s\n", SDL_GetError());
     throw std::runtime_error(error_message);
   }
   this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
   if (this->renderer == NULL) {
-    sprintf_s(error_message, "Renderer could not be created SDL Error: %s\n", SDL_GetError());
+    sprintf(error_message, "Renderer could not be created SDL Error: %s\n", SDL_GetError());
     throw std::runtime_error(error_message);
   }
 }
