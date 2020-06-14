@@ -3,3 +3,4 @@ Debug
 .vs
 *.dll
 *.vcxproj.user
+a.out

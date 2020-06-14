@@ -127,16 +127,14 @@ bool Graph::connect(Point* start, Point* end, bool ignoreIntersections) {
   return true;
 }
 
-Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
+Graph::Graph(int nPoints, int screenWidth, int screenHeight, bool debug) : Drawable(graphType) {
   using namespace Util;
   //todo: shouldn't hardcode current window w and h when generating new points
-  const int MAXW = 640;
-  const int MAXH = 480;
   int x = 0, y = 0;
   if (!debug) {
     //Create points
-    RandomUnique * xGenerator = new RandomUnique(0, MAXW);
-    RandomUnique * yGenerator = new RandomUnique(0, MAXH);
+    RandomUnique * xGenerator = new RandomUnique(0, screenWidth);
+    RandomUnique * yGenerator = new RandomUnique(0, screenHeight);
     for (size_t i = 0; i < nPoints; i++) {
       Point* point = new Point(i, xGenerator->generate(), yGenerator->generate());
       points.insert(std::pair<int, Point*>(point->id, point));
@@ -154,7 +152,7 @@ Graph::Graph(int nPoints, bool debug) : Drawable(graphType) {
     int x = -10;
     int y = 50;
     for (size_t i = 0; i < nPoints; i++) {
-      if (x >= MAXW - 50) {
+      if (x >= screenWidth - 50) {
           x = 40;
           y += 50;
       }
