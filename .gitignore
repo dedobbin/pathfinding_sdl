@@ -4,3 +4,4 @@ Debug
 *.dll
 *.vcxproj.user
 a.out
+.vscode
