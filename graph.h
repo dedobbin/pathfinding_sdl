@@ -28,7 +28,7 @@ public:
 
 class Graph : public Drawable {
 public:
-  Graph(int nPoints, int screenWidth, int screenHeight, bool debug = false);
+  Graph(int nPoints, int windowWidth, int windowHeight, bool debug = false);
   ~Graph();
   //Connects 2 points
   bool connect(Point* start, Point *end, bool ignoreIntersections = false);

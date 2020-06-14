@@ -5,24 +5,24 @@
 #include "graphics.h"
 
 int main(int argc, char* argv[]) {
-  int screenWidth, screenHeight, nNodes;
+  int windowWidth, windowHeight, nNodes;
   if (argc < 4){
 	  std::cout << "Args are screen_width, screen_height, num_nodes" << std::endl;
-	  screenWidth = 640;
-	  screenHeight = 480;
+	  windowWidth = 640;
+	  windowHeight = 480;
 	  nNodes = 100;
   } else {
-	screenWidth = std::stoi(argv[1]);
-	screenHeight = std::stoi(argv[2]);
+	windowWidth = std::stoi(argv[1]);
+	windowHeight = std::stoi(argv[2]);
 	nNodes = std::stoi(argv[3]);
   }
 
-  std::cout << "Window size: " << screenWidth << "x" << screenHeight << ", " << nNodes << " nodes" << std::endl;
+  std::cout << "Window size: " << windowWidth << "x" << windowHeight << ", " << nNodes << " nodes" << std::endl;
 
   Graphics::Controller * controller = NULL;
-  controller = new Graphics::Controller(screenWidth, screenHeight);
+  controller = new Graphics::Controller(windowWidth, windowHeight);
   clock_t begin = clock();
-  Graph* g = new Graph(nNodes, screenWidth, screenHeight);
+  Graph* g = new Graph(nNodes, windowWidth, windowHeight);
   double graphTime = double(clock() - begin) / CLOCKS_PER_SEC;
   std::cout << "Took " << graphTime << " second to create graph." << std::endl;;
 
